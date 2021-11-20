@@ -39,6 +39,21 @@ Entity simpleWithCondition(int n) {
     return entity2;
 }
 
+void test_const_cast() {
+    // 用于调用非const但对指针参数没有副作用的第三方方法时，临时去除const属性
+    const int a1 = 10;
+    const int *b1 = &a1;
+    int *c1 = const_cast<int*>(b1);
+    *c1 = 20;  // Invalid and Undefined Behavior!
+    std::cout << "*c1:" << *c1 << " *b1:" << *b1 << " a1:" << a1 << '\n';
+
+    int a2 = 10;
+    const int *b2 = &a2;
+    int *c2 = const_cast<int*>(b2);
+    *c2 = 20;  // Valid
+    std::cout << "*c2:" << *c2 << " *b2:" << *b2 << " a2:" << a2 << '\n';
+}
+
 void test_return() {
     std::cout << "----------simple----------\n";
     auto entity1 = simple();
@@ -59,5 +74,5 @@ void test_move() {
 }
 
 int main() {
-    test_return();
+    test_const_cast();
 }
